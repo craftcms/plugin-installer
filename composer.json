@@ -30,8 +30,5 @@
     },
     "extra": {
         "class": "craft\\composer\\Plugin"
-    },
-    "require-dev": {
-        "composer/composer": "^1.2"
     }
 }
