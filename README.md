@@ -13,8 +13,7 @@ To create a Craft CMS plugin that can be installed with Composer, set the `type`
   "type": "craft-plugin",
   "require": {
     "craftcms/craft": "^3.0.0-beta.1"
-  },
-  // ...
+  }
 }
 ```
 
