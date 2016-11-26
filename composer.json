@@ -1,6 +1,6 @@
 {
     "name": "craftcms/composer-installer",
-    "description": "Composer installer for Craft CMS plugins",
+    "description": "Craft CMS Composer Installer",
     "keywords": [
         "craft",
         "cms",
