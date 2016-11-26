@@ -151,6 +151,8 @@ class Installer extends LibraryInstaller
         // documentationUrl
         if (isset($extra['documentationUrl'])) {
             $plugin['documentationUrl'] = $extra['documentationUrl'];
+        } else if ($package instanceof CompletePackageInterface && ($support = $package->getSupport()) && isset($support['docs'])) {
+            $plugin['documentationUrl'] = $support['docs'];
         }
 
         // components
