@@ -67,7 +67,7 @@ In that example,
 - `class` will be `pixelandtonic\foo\Plugin` per the `autoload` property (assuming that a src/Plugin.php file exists).
 - `name` will be `Foo`, per the `extra.name` property.
 - `handle` will be `foo`, per the `name` property.
-- `version` will be whatever the current Composer version is.
+- `version` will be whatever the current package version is.
 - `description` will be `Foo plugin for Craft CMS` per the `description` property.
 - `developer` will be `Pixel & Tonic`, per the `extra.developer` property.
 - `developerUrl` will be `https://pixelandtonic.com/`, per the `extra.developerUrl` property.
