@@ -79,16 +79,22 @@ class Installer extends LibraryInstaller
         $extra = $package->getExtra();
         $prettyName = $package->getPrettyName();
 
+        // Find the PSR-4 autoload aliases and primary Plugin class
+        $class = isset($extra['class']) ? $extra['class'] : null;
+        $aliases = $this->generateDefaultAliases($package, $class);
+
         // class (required)
-        if (isset($extra['class'])) {
-            $class = $extra['class'];
-        } else if (($class = $this->findPluginClass($package)) === null) {
+        if ($class === null) {
             throw new \InvalidArgumentException('Unable to determine the Plugin class for '.$prettyName);
         }
 
         $plugin = [
             'class' => $class,
         ];
+
+        if ($aliases) {
+            $plugin['aliases'] = $aliases;
+        }
 
         if (strpos($prettyName, '/') !== false) {
             list($vendor, $name) = explode('/', $prettyName);
@@ -165,51 +171,45 @@ class Installer extends LibraryInstaller
         $this->savePlugins($plugins);
     }
 
-    protected function findPluginClass(PackageInterface $package)
+    protected function generateDefaultAliases(PackageInterface $package, &$class)
     {
         $autoload = $package->getAutoload();
 
-        if (!empty($autoload['psr-0'])) {
-            foreach ($autoload['psr-0'] as $name => $path) {
-                if (($class = $this->findPluginClassInAutoloadPath($package, $name, $path)) !== null) {
-                    return $class;
-                }
-            }
-        }
-
-        if (!empty($autoload['psr-4'])) {
-            foreach ($autoload['psr-4'] as $name => $path) {
-                if (is_array($path)) {
-                    foreach ($path as $_path) {
-                        if (($class = $this->findPluginClassInAutoloadPath($package, $name, $_path)) !== null) {
-                            return $class;
-                        }
-                    }
-                } else {
-                    if (($class = $this->findPluginClassInAutoloadPath($package, $name, $path)) !== null) {
-                        return $class;
-                    }
-                }
-            }
-        }
-
-        return null;
-    }
-
-    protected function findPluginClassInAutoloadPath(PackageInterface $package, $name, $path)
-    {
-        // Normalize $path to an absolute path
-        $fs = new Filesystem();
-        if (!$fs->isAbsolutePath($path)) {
-            $path = $this->vendorDir.'/'.$package->getPrettyName().'/'.$path;
-        }
-        $path = $fs->normalizePath($path);
-
-        if (!file_exists($path.'/Plugin.php')) {
+        if (empty($autoload['psr-4'])) {
             return null;
         }
 
-        return $name.'Plugin';
+        $fs = new Filesystem();
+        $vendorDir = $fs->normalizePath($this->vendorDir);
+        $aliases = [];
+
+        foreach ($autoload['psr-4'] as $namespace => $path) {
+            if (is_array($path)) {
+                // Yii doesn't support aliases that point to multiple base paths
+                continue;
+            }
+
+            // Normalize $path to an absolute path
+            if (!$fs->isAbsolutePath($path)) {
+                $path = $this->vendorDir.'/'.$package->getPrettyName().'/'.$path;
+            }
+
+            $path = $fs->normalizePath($path);
+            $alias = '@'.str_replace('\\', '/', trim($namespace, '\\'));
+
+            if (strpos($path.'/', $vendorDir.'/') === 0) {
+                $aliases[$alias] = '<vendor-dir>'.substr($path, strlen($vendorDir));
+            } else {
+                $aliases[$alias] = $path;
+            }
+
+            // If we're still looking for the primary Plugin class, see if it's in here
+            if ($class === null && file_exists($path.'/Plugin.php')) {
+                $class = $namespace.'Plugin';
+            }
+        }
+
+        return $aliases;
     }
 
     protected function getAuthorProperty(PackageInterface $package, $property)
@@ -248,7 +248,24 @@ class Installer extends LibraryInstaller
             opcache_invalidate($file, true);
         }
 
-        return require($file);
+        $plugins = require($file);
+
+        // Swap absolute paths with <vendor-dir> tags in the aliases array
+        $vendorDir = str_replace('\\', '/', $this->vendorDir);
+        $n = strlen($vendorDir);
+
+        foreach ($plugins as &$plugin) {
+            if (isset($plugin['aliases'])) {
+                foreach ($plugin['aliases'] as $alias => $path) {
+                    $path = str_replace('\\', '/', $path);
+                    if (strpos($path.'/', $vendorDir.'/') === 0) {
+                        $plugin['aliases'][$alias] = '<vendor-dir>'.substr($path, $n);
+                    }
+                }
+            }
+        }
+
+        return $plugins;
     }
 
     protected function savePlugins(array $plugins)
@@ -259,8 +276,8 @@ class Installer extends LibraryInstaller
             mkdir(dirname($file), 0777, true);
         }
 
-        $array = var_export($plugins, true);
-        file_put_contents($file, "<?php\n\nreturn $array;\n");
+        $array = str_replace("'<vendor-dir>", '$vendorDir . \'', var_export($plugins, true));
+        file_put_contents($file, "<?php\n\n\$vendorDir = dirname(__DIR__);\n\nreturn $array;\n");
 
         // Invalidate opcache of plugins.php if it exists
         if (function_exists('opcache_invalidate')) {
