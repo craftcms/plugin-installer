@@ -16,8 +16,8 @@ To create a Craft CMS plugin that can be installed with Composer, set the `type`
 
 The following properties can also be placed within the `extra` array:
 
-- `class` – The primary Plugin class name. If not set, the installer will look for a 
-Plugin.php file at each of the `autoload` path roots.
+- `class` – The primary Plugin class name. If not set, the installer will look for a Plugin.php file at each of the `autoload` path roots.
+- `basePath` – The base path to your plugin’s source files. This can begin with one of your `autoload` namespaces formatted as a [Yii alias](http://www.yiiframework.com/doc-2.0/guide-concept-aliases.html) (e.g. `@vendorname/foo`). If not set, the directory that contains your primary Plugin class will be used.    
 - `name` – The plugin name. If not set, the package name (sans vendor prefix) will be used.
 - `handle` – The plugin handle. If not set, the package name (sans vendor prefix) will be used.
 - `version` - The plugin version. If not set, the current package version will be used.
@@ -62,6 +62,7 @@ Here’s what a plugin’s complete composer.json file might look like:
 In that example,
 
 - `class` will be `pixelandtonic\foo\Plugin` per the `autoload` property (assuming that a src/Plugin.php file exists).
+- `basePath` will be `path/to/vendor/pixelandtonic/foo/src` (the directory that contains the `pixelandtonic\foo\Plugin` class).
 - `name` will be `Foo`, per the `extra.name` property.
 - `handle` will be `foo`, per the `name` property.
 - `version` will be whatever the current package version is.
