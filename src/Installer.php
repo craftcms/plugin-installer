@@ -79,17 +79,23 @@ class Installer extends LibraryInstaller
         $extra = $package->getExtra();
         $prettyName = $package->getPrettyName();
 
-        // Find the PSR-4 autoload aliases and primary Plugin class
+        // Find the PSR-4 autoload aliases, the primary Plugin class, and base path
         $class = isset($extra['class']) ? $extra['class'] : null;
-        $aliases = $this->generateDefaultAliases($package, $class);
+        $basePath = isset($extra['basePath']) ? $extra['basePath'] : null;
+        $aliases = $this->generateDefaultAliases($package, $class, $basePath);
 
-        // class (required)
+        // class + basePath (required)
         if ($class === null) {
-            throw new \InvalidArgumentException('Unable to determine the Plugin class for '.$prettyName);
+            throw new \InvalidArgumentException('Unable to determine the Plugin class for '.$prettyName."\n".print_r($extra, true));
+        }
+
+        if ($basePath === null) {
+            throw new \InvalidArgumentException('Unable to determine the base path for '.$prettyName);
         }
 
         $plugin = [
             'class' => $class,
+            'basePath' => $basePath
         ];
 
         if ($aliases) {
@@ -171,7 +177,7 @@ class Installer extends LibraryInstaller
         $this->savePlugins($plugins);
     }
 
-    protected function generateDefaultAliases(PackageInterface $package, &$class)
+    protected function generateDefaultAliases(PackageInterface $package, &$class, &$basePath)
     {
         $autoload = $package->getAutoload();
 
@@ -206,6 +212,23 @@ class Installer extends LibraryInstaller
             // If we're still looking for the primary Plugin class, see if it's in here
             if ($class === null && file_exists($path.'/Plugin.php')) {
                 $class = $namespace.'Plugin';
+            }
+
+            // If we're still looking for the base path but we know the primary Plugin class,
+            // see if the class namespace matches up, and the file is in here.
+            // If so, set the base path to whatever directory contains the plugin class.
+            if ($basePath === null && $class !== null) {
+                $n = strlen($namespace);
+                if (strncmp($namespace, $class, $n) === 0) {
+                    $testClassPath = $path.'/'.str_replace('\\', '/', substr($class, $n)).'.php';
+                    if (file_exists($testClassPath)) {
+                        $basePath = dirname($testClassPath);
+                        // If the base path starts with the vendor dir path, swap with <vendor-dir>
+                        if (strpos($basePath.'/', $vendorDir.'/') === 0) {
+                            $basePath = '<vendor-dir>'.substr($basePath, strlen($vendorDir));
+                        }
+                    }
+                }
             }
         }
 
@@ -250,11 +273,19 @@ class Installer extends LibraryInstaller
 
         $plugins = require($file);
 
-        // Swap absolute paths with <vendor-dir> tags in the aliases array
+        // Swap absolute paths with <vendor-dir> tags
         $vendorDir = str_replace('\\', '/', $this->vendorDir);
         $n = strlen($vendorDir);
 
         foreach ($plugins as &$plugin) {
+            // basePath
+            if (isset($plugin['basePath'])) {
+                $path = str_replace('\\', '/', $plugin['basePath']);
+                if (strpos($path.'/', $vendorDir.'/') === 0) {
+                    $plugin['basePath'] = '<vendor-dir>'.substr($path, $n);
+                }
+            }
+            // aliases
             if (isset($plugin['aliases'])) {
                 foreach ($plugin['aliases'] as $alias => $path) {
                     $path = str_replace('\\', '/', $path);
