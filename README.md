@@ -1,5 +1,5 @@
-Craft CMS Composer Installer
-============================
+Craft CMS Plugin Installer for Composer
+=======================================
 
 This is the Composer installer for [Craft CMS](https://craftcms.com/) plugins. It implements a new Composer package type named `craft-plugin`, which should be used by all Craft CMS plugins if they are distributed as Composer packages.
 
@@ -44,7 +44,7 @@ Here’s what a plugin’s complete composer.json file might look like:
     "docs": "https://pixelandtonic.com/foo/docs"
   },
   "require": {
-    "craftcms/craft": "^3.0.0-beta.1"
+    // ...
   },
   "autoload": {
     "psr-4": {

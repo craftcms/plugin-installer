@@ -1,10 +1,11 @@
 {
-  "name": "craftcms/composer-installer",
-  "description": "Craft CMS Composer Installer",
+  "name": "craftcms/plugin-installer",
+  "description": "Craft CMS Plugin Installer",
   "keywords": [
     "craft",
     "cms",
     "craftcms",
+    "plugin",
     "composer",
     "installer"
   ],
@@ -12,9 +13,9 @@
   "type": "composer-plugin",
   "support": {
     "email": "support@craftcms.com",
-    "issues": "https://github.com/craftcms/craft/issues?state=open",
+    "issues": "https://github.com/craftcms/cms/issues?state=open",
     "forum": "https://craftcms.stackexchange.com/",
-    "source": "https://github.com/craftcms/craft",
+    "source": "https://github.com/craftcms/cms",
     "docs": "https://craftcms.com/docs",
     "rss": "https://craftcms.com/changelog.rss"
   },
