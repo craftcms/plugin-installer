@@ -39,7 +39,7 @@ Here’s what a plugin’s complete composer.json file might look like:
   "description": "Foo plugin for Craft CMS",
   "type": "craft-plugin",
   "license": "MIT",
-  "minimum-stability": "stable",
+  "minimum-stability": "dev",
   "support": {
     "docs": "https://pixelandtonic.com/foo/docs"
   },
