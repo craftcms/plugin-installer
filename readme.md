@@ -44,7 +44,7 @@ Here’s what a plugin’s complete composer.json file might look like:
     "docs": "https://pixelandtonic.com/foo/docs"
   },
   "require": {
-    // ...
+    "craftcms/cms": "^3.0.0-alpha.1"
   },
   "autoload": {
     "psr-4": {
