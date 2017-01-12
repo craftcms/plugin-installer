@@ -245,9 +245,13 @@ class Installer extends LibraryInstaller
         }
 
         $authors = $package->getAuthors();
-        $firstAuthor = array_shift($authors);
+        if (empty($authors)) {
+            return null;
+        }
 
-        if ($firstAuthor === null || !isset($firstAuthor[$property])) {
+        $firstAuthor = reset($authors);
+
+        if (!isset($firstAuthor[$property])) {
             return null;
         }
 
