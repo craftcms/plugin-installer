@@ -26,6 +26,9 @@ The following properties can also be placed within the `extra` array:
 - `developer` – The developer name. If not set, the first author’s `name` will be used (via the `authors` property).
 - `developerUrl` – The developer URL. If not set, the `homepage` property will be used, or toe first author’s `homepage` (via the `authors` property).
 - `documentationUrl` – The plugin’s documentation URL. If not set, the `support.docs` property will be used.
+- `changelogUrl` – The plugin’s changelog URL (used to show pending plugin updates and their release notes).
+- `downloadUrl` – The plugin’s download URL (used to update manual installations of the plugin).
+- `sourceLanguage` – The plugin’s source language (defaults to `en-US`).
 - `components` – Object defining any [component configs](http://www.yiiframework.com/doc-2.0/guide-structure-application-components.html) that should be present on the plugin.
 
 Complete Example
@@ -54,14 +57,16 @@ Here’s what a plugin’s complete composer.json file might look like:
   "extra": {
     "name": "Foo",
     "developer": "Pixel & Tonic",
-    "developerUrl": "https://pixelandtonic.com/"
+    "developerUrl": "https://pixelandtonic.com/",
+    "changelogUrl": "https://github.com/pixelandtonic/foo/blob/master/changelog.md",
+    "downloadUrl": "https://github.com/pixelandtonic/foo/archive/master.zip"
   }
 }
 ```
 
 In that example,
 
-- `class` will be `pixelandtonic\foo\Plugin` per the `autoload` property (assuming that a src/Plugin.php file exists).
+- `class` will be `pixelandtonic\foo\Plugin` per the `autoload` property (assuming that a `src/Plugin.php` file exists).
 - `basePath` will be `path/to/vendor/pixelandtonic/foo/src` (the directory that contains the `pixelandtonic\foo\Plugin` class).
 - `name` will be `Foo`, per the `extra.name` property.
 - `handle` will be `foo`, per the `name` property.
@@ -70,3 +75,5 @@ In that example,
 - `developer` will be `Pixel & Tonic`, per the `extra.developer` property.
 - `developerUrl` will be `https://pixelandtonic.com/`, per the `extra.developerUrl` property.
 - `documentationUrl` will be `https://pixelandtonic.com/foo/docs`, per the `support.docs` property.
+- `changelogUrl` will be `https://github.com/pixelandtonic/foo/blob/master/changelog.md`, per the `extra.changelogUrl` property.
+- `downloadUrl` will be `https://github.com/pixelandtonic/foo/archive/master.zip`, per the `extra.downloadUrl` property.
