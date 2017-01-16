@@ -170,6 +170,27 @@ class Installer extends LibraryInstaller
             $plugin['documentationUrl'] = $support['docs'];
         }
 
+        // changelogUrl
+        // todo: check $extra['support']['changelog'] if that becomes a thing - https://github.com/composer/composer/issues/6079
+        if (isset($extra['changelogUrl'])) {
+            $plugin['changelogUrl'] = $extra['changelogUrl'];
+        }
+
+        // downloadUrl
+        if (isset($extra['downloadUrl'])) {
+            $plugin['downloadUrl'] = $extra['downloadUrl'];
+        }
+
+        // sourceLanguage
+        if (isset($extra['sourceLanguage'])) {
+            $plugin['sourceLanguage'] = $extra['sourceLanguage'];
+        }
+
+        // hasSettings
+        if (isset($extra['hasSettings'])) {
+            $plugin['hasSettings'] = (bool)$extra['hasSettings'];
+        }
+
         // components
         if (isset($extra['components'])) {
             $plugin['components'] = $extra['components'];
