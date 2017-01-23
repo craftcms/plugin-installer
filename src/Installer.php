@@ -93,9 +93,15 @@ class Installer extends LibraryInstaller
             throw new \InvalidArgumentException('Unable to determine the base path for '.$prettyName);
         }
 
+        // handle (required)
+        if (!isset($extra['handle']) || !preg_match('/^[a-zA-Z]\w*$/', $extra['handle'])) {
+            throw new \InvalidArgumentException('Invalid or missing plugin handle for '.$prettyName);
+        }
+
         $plugin = [
             'class' => $class,
-            'basePath' => $basePath
+            'basePath' => $basePath,
+            'handle' => $extra['handle'],
         ];
 
         if ($aliases) {
@@ -114,16 +120,6 @@ class Installer extends LibraryInstaller
             $plugin['name'] = $extra['name'];
         } else {
             $plugin['name'] = $name;
-        }
-
-        // handle
-        if (isset($extra['handle'])) {
-            if (!preg_match('/^[a-zA-Z]\w*$/', $extra['handle'])) {
-                throw new \InvalidArgumentException('Invalid plugin handle: '.$extra['handle']);
-            }
-            $plugin['handle'] = $extra['handle'];
-        } else {
-            $plugin['handle'] = preg_replace('/^[^a-zA-Z]+|\W+/', '', $name);
         }
 
         // version
