@@ -6,20 +6,24 @@ This is the Composer installer for [Craft CMS](https://craftcms.com/) plugins. I
 Usage
 -----
 
-To create a Craft CMS plugin that can be installed with Composer, set the `type` property in your plugin’s composer.json file to `"craft-plugin"`.
+To create a Craft CMS plugin that can be installed with Composer, set the `type` property in your plugin’s composer.json file to `"craft-plugin"`. You will also need to define an `"extra"` object with (at minimum) a `"handle"` key.
 
 ```json
 {
   "type": "craft-plugin",
+  "...": "...",
+  "extra": {
+    "handle": "foo"
+  }
 }
 ```
 
-The following properties can also be placed within the `extra` array:
+Here’s the full list of things you can put in the `extra` object:
 
-- `class` – The primary Plugin class name. If not set, the installer will look for a Plugin.php file at each of the `autoload` path roots.
-- `basePath` – The base path to your plugin’s source files. This can begin with one of your `autoload` namespaces formatted as a [Yii alias](http://www.yiiframework.com/doc-2.0/guide-concept-aliases.html) (e.g. `@vendorname/foo`). If not set, the directory that contains your primary Plugin class will be used.    
+- `handle` – The plugin handle (required).
+- `class` – The primary Plugin class name. If not set, the installer will look for a `Plugin.php` file at each of the `autoload` path roots.
+- `basePath` – The base path to your plugin’s source files. This can begin with one of your `autoload` namespaces, formatted as a [Yii alias](http://www.yiiframework.com/doc-2.0/guide-concept-aliases.html) (e.g. `@vendorname/foo`). If not set, the directory that contains your primary Plugin class will be used.    
 - `name` – The plugin name. If not set, the package name (sans vendor prefix) will be used.
-- `handle` – The plugin handle. If not set, the package name (sans vendor prefix) will be used.
 - `version` - The plugin version. If not set, the current package version will be used.
 - `schemaVersion` – The plugin schema version.
 - `description` – The plugin description. If not set, the main `description` property will be used.
@@ -55,6 +59,7 @@ Here’s what a plugin’s complete composer.json file might look like:
     }
   },
   "extra": {
+    "handle": "foo",
     "name": "Foo",
     "developer": "Pixel & Tonic",
     "developerUrl": "https://pixelandtonic.com/",
@@ -66,6 +71,7 @@ Here’s what a plugin’s complete composer.json file might look like:
 
 In that example,
 
+- `handle` will be `foo`, per the `extra.handle` property.
 - `class` will be `pixelandtonic\foo\Plugin` per the `autoload` property (assuming that a `src/Plugin.php` file exists).
 - `basePath` will be `path/to/vendor/pixelandtonic/foo/src` (the directory that contains the `pixelandtonic\foo\Plugin` class).
 - `name` will be `Foo`, per the `extra.name` property.
