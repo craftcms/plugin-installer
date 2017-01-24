@@ -187,6 +187,11 @@ class Installer extends LibraryInstaller
             $plugin['hasSettings'] = (bool)$extra['hasSettings'];
         }
 
+        // hasCpSection
+        if (isset($extra['hasCpSection'])) {
+            $plugin['hasCpSection'] = (bool)$extra['hasCpSection'];
+        }
+
         // components
         if (isset($extra['components'])) {
             $plugin['components'] = $extra['components'];
