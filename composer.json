@@ -2,12 +2,11 @@
   "name": "craftcms/plugin-installer",
   "description": "Craft CMS Plugin Installer",
   "keywords": [
-    "craft",
     "cms",
-    "craftcms",
-    "plugin",
     "composer",
-    "installer"
+    "craftcms",
+    "installer",
+    "plugin"
   ],
   "homepage": "https://craftcms.com/",
   "type": "composer-plugin",
