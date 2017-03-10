@@ -32,6 +32,7 @@ Here’s the full list of things you can put in the `extra` object:
 - `documentationUrl` – The plugin’s documentation URL. If not set, the `support.docs` property will be used.
 - `changelogUrl` – The plugin’s changelog URL (used to show pending plugin updates and their release notes).
 - `downloadUrl` – The plugin’s download URL (used to update manual installations of the plugin).
+- `t9nCategory` – The plugin’s translation message category (defaults to the all-lowercase plugin handle).
 - `sourceLanguage` – The plugin’s source language (defaults to `en-US`).
 - `hasSettings` – Whether the plugin has settings (should be `true` or `false`).
 - `hasCpSection` – Whether the plugin has its own section in the Control Panel (should be `true` or `false`).
