@@ -177,6 +177,11 @@ class Installer extends LibraryInstaller
             $plugin['downloadUrl'] = $extra['downloadUrl'];
         }
 
+        // t9nCategory
+        if (isset($extra['t9nCategory'])) {
+            $plugin['t9nCategory'] = $extra['t9nCategory'];
+        }
+
         // sourceLanguage
         if (isset($extra['sourceLanguage'])) {
             $plugin['sourceLanguage'] = $extra['sourceLanguage'];
