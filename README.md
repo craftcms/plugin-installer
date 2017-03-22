@@ -34,7 +34,7 @@ Here’s the full list of things you can put in the `extra` object:
 - `downloadUrl` – The plugin’s download URL (used to update manual installations of the plugin).
 - `t9nCategory` – The plugin’s translation message category (defaults to the all-lowercase plugin handle).
 - `sourceLanguage` – The plugin’s source language (defaults to `en-US`).
-- `hasSettings` – Whether the plugin has settings (should be `true` or `false`).
+- `hasCpSettings` – Whether the plugin has a settings page in the Control Panel (should be `true` or `false`).
 - `hasCpSection` – Whether the plugin has its own section in the Control Panel (should be `true` or `false`).
 - `components` – Object defining any [component configs](http://www.yiiframework.com/doc-2.0/guide-structure-application-components.html) that should be present on the plugin.
 - `modules` – Object defining any [sub-modules](http://www.yiiframework.com/doc-2.0/guide-structure-modules.html) that should be present on the plugin.

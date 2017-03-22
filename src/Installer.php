@@ -187,9 +187,9 @@ class Installer extends LibraryInstaller
             $plugin['sourceLanguage'] = $extra['sourceLanguage'];
         }
 
-        // hasSettings
-        if (isset($extra['hasSettings'])) {
-            $plugin['hasSettings'] = (bool)$extra['hasSettings'];
+        // hasCpSettings
+        if (isset($extra['hasCpSettings'])) {
+            $plugin['hasCpSettings'] = (bool)$extra['hasCpSettings'];
         }
 
         // hasCpSection
