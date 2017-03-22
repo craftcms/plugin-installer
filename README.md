@@ -37,6 +37,7 @@ Here’s the full list of things you can put in the `extra` object:
 - `hasSettings` – Whether the plugin has settings (should be `true` or `false`).
 - `hasCpSection` – Whether the plugin has its own section in the Control Panel (should be `true` or `false`).
 - `components` – Object defining any [component configs](http://www.yiiframework.com/doc-2.0/guide-structure-application-components.html) that should be present on the plugin.
+- `modules` – Object defining any [sub-modules](http://www.yiiframework.com/doc-2.0/guide-structure-modules.html) that should be present on the plugin.
 
 Complete Example
 ----------------

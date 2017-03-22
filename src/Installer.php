@@ -202,6 +202,11 @@ class Installer extends LibraryInstaller
             $plugin['components'] = $extra['components'];
         }
 
+        // modules
+        if (isset($extra['modules'])) {
+            $plugin['modules'] = $extra['modules'];
+        }
+
         $plugins = $this->loadPlugins();
         $plugins[$package->getName()] = $plugin;
         $this->savePlugins($plugins);
