@@ -74,6 +74,9 @@ class Installer extends LibraryInstaller
         $this->removePlugin($package);
     }
 
+    /**
+     * @param PackageInterface $package
+     */
     protected function addPlugin(PackageInterface $package)
     {
         $extra = $package->getExtra();
@@ -212,6 +215,13 @@ class Installer extends LibraryInstaller
         $this->savePlugins($plugins);
     }
 
+    /**
+     * @param PackageInterface $package
+     * @param                  $class
+     * @param                  $basePath
+     *
+     * @return array|null
+     */
     protected function generateDefaultAliases(PackageInterface $package, &$class, &$basePath)
     {
         $autoload = $package->getAutoload();
@@ -270,6 +280,12 @@ class Installer extends LibraryInstaller
         return $aliases;
     }
 
+    /**
+     * @param PackageInterface $package
+     * @param                  $property
+     *
+     * @return null
+     */
     protected function getAuthorProperty(PackageInterface $package, $property)
     {
         if (!$package instanceof CompletePackageInterface) {
@@ -290,6 +306,9 @@ class Installer extends LibraryInstaller
         return $firstAuthor[$property];
     }
 
+    /**
+     * @param PackageInterface $package
+     */
     protected function removePlugin(PackageInterface $package)
     {
         $plugins = $this->loadPlugins();
@@ -297,6 +316,9 @@ class Installer extends LibraryInstaller
         $this->savePlugins($plugins);
     }
 
+    /**
+     * @return array|mixed
+     */
     protected function loadPlugins()
     {
         $file = $this->vendorDir.'/'.static::PLUGINS_FILE;
@@ -338,6 +360,9 @@ class Installer extends LibraryInstaller
         return $plugins;
     }
 
+    /**
+     * @param array $plugins
+     */
     protected function savePlugins(array $plugins)
     {
         $file = $this->vendorDir.'/'.static::PLUGINS_FILE;
