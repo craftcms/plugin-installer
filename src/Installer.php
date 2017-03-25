@@ -282,7 +282,7 @@ class Installer extends LibraryInstaller
 
     /**
      * @param PackageInterface $package
-     * @param                  $property
+     * @param string           $property
      *
      * @return null
      */
