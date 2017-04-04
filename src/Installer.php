@@ -329,7 +329,7 @@ class Installer extends LibraryInstaller
 
         // Invalidate opcache of plugins.php if it exists
         if (function_exists('opcache_invalidate')) {
-            opcache_invalidate($file, true);
+            @opcache_invalidate($file, true);
         }
 
         $plugins = require($file);
@@ -376,7 +376,7 @@ class Installer extends LibraryInstaller
 
         // Invalidate opcache of plugins.php if it exists
         if (function_exists('opcache_invalidate')) {
-            opcache_invalidate($file, true);
+            @opcache_invalidate($file, true);
         }
     }
 }

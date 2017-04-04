@@ -1,6 +1,11 @@
 Changelog
 =========
 
+## 1.3.1 - 2017-04-04
+
+### Fixed
+- Fixed a PHP error that could occur if the `opcache.restrict_api` PHP config setting was enabled.
+
 ## 1.3.0 - 2017-03-24
 
 ### Changed
