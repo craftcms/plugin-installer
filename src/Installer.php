@@ -6,6 +6,7 @@
 
 namespace craft\composer;
 
+use Composer\DependencyResolver\Operation\UninstallOperation;
 use Composer\Package\CompletePackageInterface;
 use Composer\Package\PackageInterface;
 use Composer\Installer\LibraryInstaller;
@@ -44,7 +45,15 @@ class Installer extends LibraryInstaller
         parent::install($repo, $package);
 
         // Add the plugin info to plugins.php
-        $this->addPlugin($package);
+        try {
+            $this->addPlugin($package);
+        } catch (\Exception $e) {
+            // Rollback
+            //$this->io->writeError('<error>Error: '.$e->getMessage()."</error>\n");
+            $operation = new UninstallOperation($package, 'error: '.$e->getMessage());
+            $this->composer->getInstallationManager()->execute($repo, $operation);
+            throw $e;
+        }
     }
 
     /**
@@ -76,6 +85,7 @@ class Installer extends LibraryInstaller
 
     /**
      * @param PackageInterface $package
+     * @throws \Exception if there's an issue with the plugin
      */
     protected function addPlugin(PackageInterface $package)
     {
@@ -89,16 +99,16 @@ class Installer extends LibraryInstaller
 
         // class + basePath (required)
         if ($class === null) {
-            throw new \InvalidArgumentException('Unable to determine the Plugin class for '.$prettyName."\n".print_r($extra, true));
+            throw new \Exception('Unable to determine the Plugin class for '.$prettyName);
         }
 
         if ($basePath === null) {
-            throw new \InvalidArgumentException('Unable to determine the base path for '.$prettyName);
+            throw new \Exception('Unable to determine the base path for '.$prettyName);
         }
 
         // handle (required)
         if (!isset($extra['handle']) || !preg_match('/^[a-zA-Z]\w*$/', $extra['handle'])) {
-            throw new \InvalidArgumentException('Invalid or missing plugin handle for '.$prettyName);
+            throw new \Exception('Invalid or missing plugin handle for '.$prettyName);
         }
 
         $plugin = [
