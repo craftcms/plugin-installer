@@ -7,6 +7,7 @@
 namespace craft\composer;
 
 use Composer\DependencyResolver\Operation\UninstallOperation;
+use Composer\DependencyResolver\Operation\UpdateOperation;
 use Composer\Package\CompletePackageInterface;
 use Composer\Package\PackageInterface;
 use Composer\Installer\LibraryInstaller;
@@ -64,10 +65,22 @@ class Installer extends LibraryInstaller
         parent::update($repo, $initial, $target);
 
         // Remove the old plugin info from plugins.php
-        $this->removePlugin($initial);
+        $initialPlugin = $this->removePlugin($initial);
 
         // Add the new plugin info to plugins.php
-        $this->addPlugin($target);
+        try {
+            $this->addPlugin($target);
+        } catch (InvalidPluginException $e) {
+            // Revert to previous version if it was installed correctly, otherwise uninstall
+            $reason = 'error: '.$e->getMessage();
+            if ($initialPlugin !== null) {
+                $operation = new UpdateOperation($target, $initial, $reason);
+            } else {
+                $operation = new UninstallOperation($target, $reason);
+            }
+            $this->composer->getInstallationManager()->execute($repo, $operation);
+            throw $e;
+        }
     }
 
     /**
@@ -317,12 +330,22 @@ class Installer extends LibraryInstaller
 
     /**
      * @param PackageInterface $package
+     *
+     * @return array|null The removed plugin info, or null if it wasn't there in the first place
      */
     protected function removePlugin(PackageInterface $package)
     {
+        $name = $package->getName();
         $plugins = $this->loadPlugins();
-        unset($plugins[$package->getName()]);
+
+        if (!isset($plugin[$name])) {
+            return null;
+        }
+
+        $plugin = $plugins[$name];
+        unset($plugins[$name]);
         $this->savePlugins($plugins);
+        return $plugin;
     }
 
     /**
