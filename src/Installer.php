@@ -232,8 +232,17 @@ class Installer extends LibraryInstaller
             $plugin['modules'] = $extra['modules'];
         }
 
+        $this->registerPlugin($package->getName(), $plugin);
+    }
+
+    /**
+     * @param string $name   The plugin's package name
+     * @param array  $plugin The plugin config
+     */
+    protected function registerPlugin($name, array $plugin)
+    {
         $plugins = $this->loadPlugins();
-        $plugins[$package->getName()] = $plugin;
+        $plugins[$name] = $plugin;
         $this->savePlugins($plugins);
     }
 
@@ -335,7 +344,16 @@ class Installer extends LibraryInstaller
      */
     protected function removePlugin(PackageInterface $package)
     {
-        $name = $package->getName();
+        return $this->unregisterPlugin($package->getName());
+    }
+
+    /**
+     * @param string $name The plugin's package name
+     *
+     * @return array|null The removed plugin info, or null if it wasn't there in the first place
+     */
+    protected function unregisterPlugin(string $name)
+    {
         $plugins = $this->loadPlugins();
 
         if (!isset($plugin[$name])) {
