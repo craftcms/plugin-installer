@@ -6,8 +6,6 @@
 
 namespace craft\composer;
 
-use Composer\DependencyResolver\Operation\UninstallOperation;
-use Composer\DependencyResolver\Operation\UpdateOperation;
 use Composer\Installer\LibraryInstaller;
 use Composer\Package\CompletePackageInterface;
 use Composer\Package\PackageInterface;
@@ -50,8 +48,7 @@ class Installer extends LibraryInstaller
             $this->addPlugin($package);
         } catch (InvalidPluginException $e) {
             // Rollback
-            $operation = new UninstallOperation($package, 'error: '.$e->getMessage());
-            $this->composer->getInstallationManager()->execute($repo, $operation);
+            parent::uninstall($repo, $package);
             throw $e;
         }
     }
@@ -71,14 +68,11 @@ class Installer extends LibraryInstaller
         try {
             $this->addPlugin($target);
         } catch (InvalidPluginException $e) {
-            // Revert to previous version if it was installed correctly, otherwise uninstall
-            $reason = 'error: '.$e->getMessage();
+            // Rollback
+            parent::update($repo, $target, $initial);
             if ($initialPlugin !== null) {
-                $operation = new UpdateOperation($target, $initial, $reason);
-            } else {
-                $operation = new UninstallOperation($target, $reason);
+                $this->registerPlugin($initial->getName(), $initialPlugin);
             }
-            $this->composer->getInstallationManager()->execute($repo, $operation);
             throw $e;
         }
     }
