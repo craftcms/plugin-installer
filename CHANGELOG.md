@@ -1,6 +1,11 @@
 Changelog
 =========
 
+## 1.4.0 - 2017-06-19
+
+### Changed
+- The installer now reverts the vendor/ folder to its previous state after attempting to install/update an invalid plugin.
+
 ## 1.3.1 - 2017-04-04
 
 ### Fixed
