@@ -111,16 +111,16 @@ class Installer extends LibraryInstaller
 
         // class + basePath (required)
         if ($class === null) {
-            throw new InvalidPluginException('Unable to determine the Plugin class for '.$prettyName);
+            throw new InvalidPluginException($package, 'Unable to determine the Plugin class');
         }
 
         if ($basePath === null) {
-            throw new InvalidPluginException('Unable to determine the base path for '.$prettyName);
+            throw new InvalidPluginException($package, 'Unable to determine the base path');
         }
 
         // handle (required)
         if (!isset($extra['handle']) || !preg_match('/^[a-zA-Z]\w*$/', $extra['handle'])) {
-            throw new InvalidPluginException('Invalid or missing plugin handle for '.$prettyName);
+            throw new InvalidPluginException($package, 'Invalid or missing plugin handle');
         }
 
         $plugin = [
