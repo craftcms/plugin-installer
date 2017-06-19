@@ -49,7 +49,6 @@ class Installer extends LibraryInstaller
             $this->addPlugin($package);
         } catch (InvalidPluginException $e) {
             // Rollback
-            //$this->io->writeError('<error>Error: '.$e->getMessage()."</error>\n");
             $operation = new UninstallOperation($package, 'error: '.$e->getMessage());
             $this->composer->getInstallationManager()->execute($repo, $operation);
             throw $e;
