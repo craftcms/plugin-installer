@@ -8,9 +8,9 @@ namespace craft\composer;
 
 use Composer\DependencyResolver\Operation\UninstallOperation;
 use Composer\DependencyResolver\Operation\UpdateOperation;
+use Composer\Installer\LibraryInstaller;
 use Composer\Package\CompletePackageInterface;
 use Composer\Package\PackageInterface;
-use Composer\Installer\LibraryInstaller;
 use Composer\Repository\InstalledRepositoryInterface;
 use Composer\Util\Filesystem;
 
