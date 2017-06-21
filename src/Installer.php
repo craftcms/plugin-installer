@@ -113,7 +113,7 @@ class Installer extends LibraryInstaller
         }
 
         // handle (required)
-        if (!isset($extra['handle']) || !preg_match('/^[a-zA-Z]\w*$/', $extra['handle'])) {
+        if (!isset($extra['handle']) || !preg_match('/^[a-zA-Z][\w\-]*$/', $extra['handle'])) {
             throw new InvalidPluginException($package, 'Invalid or missing plugin handle');
         }
 
