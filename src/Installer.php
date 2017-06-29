@@ -117,10 +117,21 @@ class Installer extends LibraryInstaller
             throw new InvalidPluginException($package, 'Invalid or missing plugin handle');
         }
 
+        // normalize the handle (copied from craft\services\Plugins::_normalizeHandle())
+        $handle = $extra['handle'];
+        if (strtolower($handle) !== $handle) {
+            // copied from yii\helpers\BaseInflector::camel2id() w/ default options
+            $handle = strtolower(trim(str_replace('_', '-', preg_replace('/(?<![A-Z])[A-Z]/', '-' . '\0', $handle)), '-'));
+            // prevent double -'s
+            $handle = preg_replace('/\-{2,}/', '-', $handle);
+            // complain about it
+            $this->io->write('<warning>'.$prettyName.' uses the old plugin handle format ("'.$extra['handle'].'"). It should be "'.$handle.'".</warning>');
+        }
+
         $plugin = [
             'class' => $class,
             'basePath' => $basePath,
-            'handle' => $extra['handle'],
+            'handle' => $handle,
         ];
 
         if ($aliases) {
