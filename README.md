@@ -29,6 +29,7 @@ Here’s the full list of things you can put in the `extra` object:
 - `description` – The plugin description. If not set, the main `description` property will be used.
 - `developer` – The developer name. If not set, the first author’s `name` will be used (via the `authors` property).
 - `developerUrl` – The developer URL. If not set, the `homepage` property will be used, or toe first author’s `homepage` (via the `authors` property).
+- `developerEmail` – The developer support email. If not set, the `support.email` property will be used.
 - `documentationUrl` – The plugin’s documentation URL. If not set, the `support.docs` property will be used.
 - `changelogUrl` – The plugin’s changelog URL (used to show pending plugin updates and their release notes).
 - `downloadUrl` – The plugin’s download URL (used to update manual installations of the plugin).
@@ -52,6 +53,7 @@ Here’s what a plugin’s complete composer.json file might look like:
   "license": "MIT",
   "minimum-stability": "dev",
   "support": {
+    "email": "support@craftcms.com",
     "docs": "https://pixelandtonic.com/foo/docs"
   },
   "require": {
@@ -84,6 +86,7 @@ In that example,
 - `description` will be `Foo plugin for Craft CMS` per the `description` property.
 - `developer` will be `Pixel & Tonic`, per the `extra.developer` property.
 - `developerUrl` will be `https://pixelandtonic.com/`, per the `extra.developerUrl` property.
+- `developerEmail` will be `support@craftcms.com`, per the `support.email` property.
 - `documentationUrl` will be `https://pixelandtonic.com/foo/docs`, per the `support.docs` property.
 - `changelogUrl` will be `https://github.com/pixelandtonic/foo/blob/master/changelog.md`, per the `extra.changelogUrl` property.
 - `downloadUrl` will be `https://github.com/pixelandtonic/foo/archive/master.zip`, per the `extra.downloadUrl` property.

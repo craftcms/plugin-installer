@@ -189,6 +189,13 @@ class Installer extends LibraryInstaller
             $plugin['developerUrl'] = $authorHomepage;
         }
 
+        // developerEmail
+        if (isset($extra['developerEmail'])) {
+            $plugin['developerEmail'] = $extra['developerEmail'];
+        } else if ($package instanceof CompletePackageInterface && ($support = $package->getSupport()) && isset($support['email'])) {
+            $plugin['developerEmail'] = $support['email'];
+        }
+
         // documentationUrl
         if (isset($extra['documentationUrl'])) {
             $plugin['documentationUrl'] = $extra['documentationUrl'];
