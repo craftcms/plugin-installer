@@ -1,6 +1,14 @@
 Changelog
 =========
 
+## 1.5.0 - 2017-07-07
+
+### Added
+- Added support for setting plugins’ `$developerEmail` property via `support.email` or `extra.developerEmail` in `composer.json`.
+
+### Changed
+- Craft 3 Beta 20 compatibility.
+
 ## 1.4.0 - 2017-06-19
 
 ### Changed
