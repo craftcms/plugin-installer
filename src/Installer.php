@@ -128,11 +128,11 @@ class Installer extends LibraryInstaller
             $this->io->write('<warning>'.$prettyName.' uses the old plugin handle format ("'.$extra['handle'].'"). It should be "'.$handle.'".</warning>');
         }
 
-        $plugin = [
+        $plugin = array(
             'class' => $class,
             'basePath' => $basePath,
             'handle' => $handle,
-        ];
+        );
 
         if ($aliases) {
             $plugin['aliases'] = $aliases;
@@ -275,7 +275,7 @@ class Installer extends LibraryInstaller
 
         $fs = new Filesystem();
         $vendorDir = $fs->normalizePath($this->vendorDir);
-        $aliases = [];
+        $aliases = array();
 
         foreach ($autoload['psr-4'] as $namespace => $path) {
             if (is_array($path)) {
@@ -364,7 +364,7 @@ class Installer extends LibraryInstaller
      *
      * @return array|null The removed plugin info, or null if it wasn't there in the first place
      */
-    protected function unregisterPlugin(string $name)
+    protected function unregisterPlugin($name)
     {
         $plugins = $this->loadPlugins();
 
@@ -386,7 +386,7 @@ class Installer extends LibraryInstaller
         $file = $this->vendorDir.'/'.static::PLUGINS_FILE;
 
         if (!is_file($file)) {
-            return [];
+            return array();
         }
 
         // Invalidate opcache of plugins.php if it exists
@@ -394,6 +394,7 @@ class Installer extends LibraryInstaller
             @opcache_invalidate($file, true);
         }
 
+        /** @var array $plugins */
         $plugins = require($file);
 
         // Swap absolute paths with <vendor-dir> tags

@@ -1,6 +1,11 @@
 Changelog
 =========
 
+## 1.5.1 - 2017-07-12
+
+### Fixed
+- Fixed some PHP errors that could occur when running Composer on PHP < 7.0.
+
 ## 1.5.0 - 2017-07-07
 
 ### Added
