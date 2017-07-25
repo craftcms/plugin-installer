@@ -1,6 +1,11 @@
 Changelog
 =========
 
+## 1.5.2 - 2017-07-25
+
+### Fixed
+- Fixed a bug where Craft plugin info wasn’t being removed from `craftcms/plugins.php` when a plugin was uninstalled. 
+
 ## 1.5.1 - 2017-07-12
 
 ### Fixed

@@ -368,7 +368,7 @@ class Installer extends LibraryInstaller
     {
         $plugins = $this->loadPlugins();
 
-        if (!isset($plugin[$name])) {
+        if (!isset($plugins[$name])) {
             return null;
         }
 
