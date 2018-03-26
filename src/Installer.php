@@ -244,6 +244,11 @@ class Installer extends LibraryInstaller
             $plugin['modules'] = $extra['modules'];
         }
 
+        // minimum required version
+        if (isset($extra['minVersionRequired'])) {
+            $plugin['minVersionRequired'] = $extra['minVersionRequired'];
+        }
+
         $this->registerPlugin($package->getName(), $plugin);
     }
 

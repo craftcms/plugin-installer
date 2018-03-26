@@ -39,6 +39,7 @@ Here’s the full list of things you can put in the `extra` object:
 - `hasCpSection` – Whether the plugin has its own section in the Control Panel (should be `true` or `false`).
 - `components` – Object defining any [component configs](http://www.yiiframework.com/doc-2.0/guide-structure-application-components.html) that should be present on the plugin.
 - `modules` – Object defining any [sub-modules](http://www.yiiframework.com/doc-2.0/guide-structure-modules.html) that should be present on the plugin.
+- `minVersionRequired` – The minimum version the plugin must have when updating to this version.
 
 Complete Example
 ----------------
