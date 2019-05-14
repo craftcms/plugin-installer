@@ -270,7 +270,7 @@ class Installer extends LibraryInstaller
      *
      * @return array|null
      */
-    protected function generateDefaultAliases(PackageInterface $package, &$class, &$basePath, bool $userVendorPath = true)
+    protected function generateDefaultAliases(PackageInterface $package, &$class, &$basePath, bool $useRoot = false)
     {
         $autoload = $package->getAutoload();
 
@@ -288,12 +288,13 @@ class Installer extends LibraryInstaller
                 continue;
             }
 
+
             // Normalize $path to an absolute path
             if (!$fs->isAbsolutePath($path)) {
-                if ($userVendorPath === true) {
+                if ($useRoot === false) {
                     $path = $this->vendorDir . '/' . $package->getPrettyName() . '/' . $path;
                 } else {
-                    // TODO: Determine path
+                    $path = dirname($this->vendorDir) . '/' . $path;
                 }
             }
 
