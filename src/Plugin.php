@@ -28,5 +28,11 @@ class Plugin implements PluginInterface
         // Register the plugin installer
         $installer = new Installer($io, $composer);
         $composer->getInstallationManager()->addInstaller($installer);
+
+        // At root?
+        if ($composer->getPackage()->getType() === 'craft-plugin') {
+            // TODO: Make public
+            $installer->addPlugin($composer->getPackage());
+        }
     }
 }
