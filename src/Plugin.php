@@ -29,8 +29,8 @@ class Plugin implements PluginInterface
         $installer = new Installer($io, $composer);
         $composer->getInstallationManager()->addInstaller($installer);
 
-        // At root?
-        if ($composer->getPackage()->getType() === 'craft-plugin') {
+        // Is this a plugin at root? Elementary, my dear Watson 🕵️!
+        if ($installer->supports($composer->getPackage()->getType())) {
           $installer->addPlugin($composer->getPackage(), true);
         }
     }
