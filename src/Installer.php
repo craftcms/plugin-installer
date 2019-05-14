@@ -270,7 +270,7 @@ class Installer extends LibraryInstaller
      *
      * @return array|null
      */
-    protected function generateDefaultAliases(PackageInterface $package, &$class, &$basePath)
+    protected function generateDefaultAliases(PackageInterface $package, &$class, &$basePath, bool $userVendorPath = true)
     {
         $autoload = $package->getAutoload();
 
@@ -290,7 +290,11 @@ class Installer extends LibraryInstaller
 
             // Normalize $path to an absolute path
             if (!$fs->isAbsolutePath($path)) {
-                $path = $this->vendorDir.'/'.$package->getPrettyName().'/'.$path;
+                if ($userVendorPath === true) {
+                    $path = $this->vendorDir . '/' . $package->getPrettyName() . '/' . $path;
+                } else {
+                    // TODO: Determine path
+                }
             }
 
             $path = $fs->normalizePath($path);
