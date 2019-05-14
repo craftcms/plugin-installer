@@ -93,7 +93,7 @@ class Installer extends LibraryInstaller
      * @param PackageInterface $package
      * @throws InvalidPluginException() if there's an issue with the plugin
      */
-    public function addPlugin(PackageInterface $package)
+    public function addPlugin(PackageInterface $package, bool $useRoot = null)
     {
         $extra = $package->getExtra();
         $prettyName = $package->getPrettyName();
@@ -101,7 +101,7 @@ class Installer extends LibraryInstaller
         // Find the PSR-4 autoload aliases, the primary Plugin class, and base path
         $class = isset($extra['class']) ? $extra['class'] : null;
         $basePath = isset($extra['basePath']) ? $extra['basePath'] : null;
-        $aliases = $this->generateDefaultAliases($package, $class, $basePath);
+        $aliases = $this->generateDefaultAliases($package, $class, $basePath, $useRoot);
 
         // class + basePath (required)
         if ($class === null) {
@@ -270,7 +270,7 @@ class Installer extends LibraryInstaller
      *
      * @return array|null
      */
-    protected function generateDefaultAliases(PackageInterface $package, &$class, &$basePath, bool $useRoot = false)
+    protected function generateDefaultAliases(PackageInterface $package, &$class, &$basePath, bool $useRoot = null)
     {
         $autoload = $package->getAutoload();
 
@@ -287,14 +287,12 @@ class Installer extends LibraryInstaller
                 // Yii doesn't support aliases that point to multiple base paths
                 continue;
             }
-
-
             // Normalize $path to an absolute path
             if (!$fs->isAbsolutePath($path)) {
-                if ($useRoot === false) {
-                    $path = $this->vendorDir . '/' . $package->getPrettyName() . '/' . $path;
-                } else {
+                if ($useRoot === true) {
                     $path = dirname($this->vendorDir) . '/' . $path;
+                } else {
+                    $path = $this->vendorDir . '/' . $package->getPrettyName() . '/' . $path;
                 }
             }
 
