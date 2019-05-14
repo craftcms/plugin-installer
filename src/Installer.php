@@ -91,6 +91,7 @@ class Installer extends LibraryInstaller
 
     /**
      * @param PackageInterface $package
+     * @param bool|null $useRoot
      * @throws InvalidPluginException() if there's an issue with the plugin
      */
     public function addPlugin(PackageInterface $package, bool $useRoot = null)
@@ -265,9 +266,9 @@ class Installer extends LibraryInstaller
 
     /**
      * @param PackageInterface $package
-     * @param                  $class
-     * @param                  $basePath
-     *
+     * @param $class
+     * @param $basePath
+     * @param bool|null $useRoot
      * @return array|null
      */
     protected function generateDefaultAliases(PackageInterface $package, &$class, &$basePath, bool $useRoot = null)
