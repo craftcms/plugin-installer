@@ -93,7 +93,7 @@ class Installer extends LibraryInstaller
      * @param PackageInterface $package
      * @throws InvalidPluginException() if there's an issue with the plugin
      */
-    protected function addPlugin(PackageInterface $package)
+    public function addPlugin(PackageInterface $package)
     {
         $extra = $package->getExtra();
         $prettyName = $package->getPrettyName();

@@ -31,7 +31,6 @@ class Plugin implements PluginInterface
 
         // At root?
         if ($composer->getPackage()->getType() === 'craft-plugin') {
-            // TODO: Make public
             $installer->addPlugin($composer->getPackage());
         }
     }
