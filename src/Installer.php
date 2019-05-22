@@ -126,14 +126,14 @@ class Installer extends LibraryInstaller
             // prevent double -'s
             $handle = preg_replace('/\-{2,}/', '-', $handle);
             // complain about it
-            $this->io->write('<warning>'.$prettyName.' uses the old plugin handle format ("'.$extra['handle'].'"). It should be "'.$handle.'".</warning>');
+            $this->io->write('<warning>' . $prettyName . ' uses the old plugin handle format ("' . $extra['handle'] . '"). It should be "' . $handle . '".</warning>');
         }
 
-        $plugin = array(
+        $plugin = [
             'class' => $class,
             'basePath' => $basePath,
             'handle' => $handle,
-        );
+        ];
 
         if ($aliases) {
             $plugin['aliases'] = $aliases;
@@ -254,8 +254,8 @@ class Installer extends LibraryInstaller
     }
 
     /**
-     * @param string $name   The plugin's package name
-     * @param array  $plugin The plugin config
+     * @param string $name The plugin's package name
+     * @param array $plugin The plugin config
      */
     protected function registerPlugin($name, array $plugin)
     {
@@ -281,7 +281,7 @@ class Installer extends LibraryInstaller
 
         $fs = new Filesystem();
         $vendorDir = $fs->normalizePath($this->vendorDir);
-        $aliases = array();
+        $aliases = [];
 
         foreach ($autoload['psr-4'] as $namespace => $path) {
             if (is_array($path)) {
@@ -300,19 +300,19 @@ class Installer extends LibraryInstaller
             }
 
             $path = $fs->normalizePath($path);
-            $alias = '@'.str_replace('\\', '/', trim($namespace, '\\'));
+            $alias = '@' . str_replace('\\', '/', trim($namespace, '\\'));
 
-            if (strpos($path.'/', $vendorDir.'/') === 0) {
-                $aliases[$alias] = '<vendor-dir>'.substr($path, strlen($vendorDir));
-            } else if (strpos($path.'/', $cwd.'/') === 0) {
-                $aliases[$alias] = '<root-dir>'.substr($path, strlen($cwd));
+            if (strpos($path . '/', $vendorDir . '/') === 0) {
+                $aliases[$alias] = '<vendor-dir>' . substr($path, strlen($vendorDir));
+            } else if (strpos($path . '/', $cwd . '/') === 0) {
+                $aliases[$alias] = '<root-dir>' . substr($path, strlen($cwd));
             } else {
                 $aliases[$alias] = $path;
             }
 
             // If we're still looking for the primary Plugin class, see if it's in here
-            if ($class === null && file_exists($path.'/Plugin.php')) {
-                $class = $namespace.'Plugin';
+            if ($class === null && file_exists($path . '/Plugin.php')) {
+                $class = $namespace . 'Plugin';
             }
 
             // If we're still looking for the base path but we know the primary Plugin class,
@@ -321,12 +321,12 @@ class Installer extends LibraryInstaller
             if ($basePath === null && $class !== null) {
                 $n = strlen($namespace);
                 if (strncmp($namespace, $class, $n) === 0) {
-                    $testClassPath = $path.'/'.str_replace('\\', '/', substr($class, $n)).'.php';
+                    $testClassPath = $path . '/' . str_replace('\\', '/', substr($class, $n)) . '.php';
                     if (file_exists($testClassPath)) {
                         $basePath = dirname($testClassPath);
                         // If the base path starts with the vendor dir path, swap with <vendor-dir>
-                        if (strpos($basePath.'/', $vendorDir.'/') === 0) {
-                            $basePath = '<vendor-dir>'.substr($basePath, strlen($vendorDir));
+                        if (strpos($basePath . '/', $vendorDir . '/') === 0) {
+                            $basePath = '<vendor-dir>' . substr($basePath, strlen($vendorDir));
                         }
                     }
                 }
@@ -338,7 +338,7 @@ class Installer extends LibraryInstaller
 
     /**
      * @param PackageInterface $package
-     * @param string           $property
+     * @param string $property
      *
      * @return null
      */
@@ -396,10 +396,10 @@ class Installer extends LibraryInstaller
      */
     protected function loadPlugins()
     {
-        $file = $this->vendorDir.'/'.static::PLUGINS_FILE;
+        $file = $this->vendorDir . '/' . static::PLUGINS_FILE;
 
         if (!is_file($file)) {
-            return array();
+            return [];
         }
 
         // Invalidate opcache of plugins.php if it exists
@@ -418,16 +418,16 @@ class Installer extends LibraryInstaller
             // basePath
             if (isset($plugin['basePath'])) {
                 $path = str_replace('\\', '/', $plugin['basePath']);
-                if (strpos($path.'/', $vendorDir.'/') === 0) {
-                    $plugin['basePath'] = '<vendor-dir>'.substr($path, $n);
+                if (strpos($path . '/', $vendorDir . '/') === 0) {
+                    $plugin['basePath'] = '<vendor-dir>' . substr($path, $n);
                 }
             }
             // aliases
             if (isset($plugin['aliases'])) {
                 foreach ($plugin['aliases'] as $alias => $path) {
                     $path = str_replace('\\', '/', $path);
-                    if (strpos($path.'/', $vendorDir.'/') === 0) {
-                        $plugin['aliases'][$alias] = '<vendor-dir>'.substr($path, $n);
+                    if (strpos($path . '/', $vendorDir . '/') === 0) {
+                        $plugin['aliases'][$alias] = '<vendor-dir>' . substr($path, $n);
                     }
                 }
             }
@@ -441,7 +441,7 @@ class Installer extends LibraryInstaller
      */
     protected function savePlugins(array $plugins)
     {
-        $file = $this->vendorDir.'/'.static::PLUGINS_FILE;
+        $file = $this->vendorDir . '/' . static::PLUGINS_FILE;
 
         if (!file_exists(dirname($file))) {
             mkdir(dirname($file), 0777, true);

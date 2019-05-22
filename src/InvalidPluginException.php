@@ -25,15 +25,15 @@ class InvalidPluginException extends \Exception
      * Constructor.
      *
      * @param PackageInterface $package
-     * @param string           $error
-     * @param Throwable|null   $previous
+     * @param string $error
+     * @param Throwable|null $previous
      */
     public function __construct(PackageInterface $package, $error = '', Throwable $previous = null)
     {
         $this->package = $package;
         $this->error = $error;
 
-        parent::__construct("Couldn't install ".$package->getPrettyName().': '.$error, 0, $previous);
+        parent::__construct("Couldn't install " . $package->getPrettyName() . ': ' . $error, 0, $previous);
     }
 
     /**

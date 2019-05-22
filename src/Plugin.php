@@ -31,7 +31,7 @@ class Plugin implements PluginInterface
 
         // Is this a plugin at root? Elementary, my dear Watson 🕵️!
         if ($installer->supports($composer->getPackage()->getType())) {
-          $installer->addPlugin($composer->getPackage(), true);
+            $installer->addPlugin($composer->getPackage(), true);
         }
     }
 }
