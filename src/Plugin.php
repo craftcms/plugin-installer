@@ -28,5 +28,10 @@ class Plugin implements PluginInterface
         // Register the plugin installer
         $installer = new Installer($io, $composer);
         $composer->getInstallationManager()->addInstaller($installer);
+
+        // Is this a plugin at root? Elementary, my dear Watson 🕵️!
+        if ($installer->supports($composer->getPackage()->getType())) {
+          $installer->addPlugin($composer->getPackage(), true);
+        }
     }
 }
