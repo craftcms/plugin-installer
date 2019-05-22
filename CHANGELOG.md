@@ -1,6 +1,11 @@
 Changelog
 =========
 
+## 1.5.3 - 2019-05-22
+
+### Added
+- Added support for installing plugins as the root Composer package. ([#2](https://github.com/craftcms/plugin-installer/pull/2))
+
 ## 1.5.2 - 2017-07-25
 
 ### Fixed
