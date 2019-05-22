@@ -91,10 +91,10 @@ class Installer extends LibraryInstaller
 
     /**
      * @param PackageInterface $package
-     * @param bool|null $useRoot
+     * @param bool $isRoot
      * @throws InvalidPluginException() if there's an issue with the plugin
      */
-    public function addPlugin(PackageInterface $package, bool $useRoot = null)
+    public function addPlugin(PackageInterface $package, bool $isRoot = false)
     {
         $extra = $package->getExtra();
         $prettyName = $package->getPrettyName();
@@ -102,7 +102,7 @@ class Installer extends LibraryInstaller
         // Find the PSR-4 autoload aliases, the primary Plugin class, and base path
         $class = isset($extra['class']) ? $extra['class'] : null;
         $basePath = isset($extra['basePath']) ? $extra['basePath'] : null;
-        $aliases = $this->generateDefaultAliases($package, $class, $basePath, $useRoot);
+        $aliases = $this->generateDefaultAliases($package, $class, $basePath, $isRoot);
 
         // class + basePath (required)
         if ($class === null) {
@@ -268,10 +268,10 @@ class Installer extends LibraryInstaller
      * @param PackageInterface $package
      * @param $class
      * @param $basePath
-     * @param bool|null $useRoot
+     * @param bool $isRoot
      * @return array|null
      */
-    protected function generateDefaultAliases(PackageInterface $package, &$class, &$basePath, bool $useRoot = null)
+    protected function generateDefaultAliases(PackageInterface $package, &$class, &$basePath, bool $isRoot)
     {
         $autoload = $package->getAutoload();
 
@@ -288,10 +288,12 @@ class Installer extends LibraryInstaller
                 // Yii doesn't support aliases that point to multiple base paths
                 continue;
             }
+
             // Normalize $path to an absolute path
+            $cwd = $fs->normalizePath(getcwd());
             if (!$fs->isAbsolutePath($path)) {
-                if ($useRoot === true) {
-                    $path = dirname($this->vendorDir) . '/' . $path;
+                if ($isRoot) {
+                    $path = $cwd . '/' . $path;
                 } else {
                     $path = $this->vendorDir . '/' . $package->getPrettyName() . '/' . $path;
                 }
@@ -302,6 +304,8 @@ class Installer extends LibraryInstaller
 
             if (strpos($path.'/', $vendorDir.'/') === 0) {
                 $aliases[$alias] = '<vendor-dir>'.substr($path, strlen($vendorDir));
+            } else if (strpos($path.'/', $cwd.'/') === 0) {
+                $aliases[$alias] = '<root-dir>'.substr($path, strlen($cwd));
             } else {
                 $aliases[$alias] = $path;
             }
@@ -443,8 +447,10 @@ class Installer extends LibraryInstaller
             mkdir(dirname($file), 0777, true);
         }
 
-        $array = str_replace("'<vendor-dir>", '$vendorDir . \'', var_export($plugins, true));
-        file_put_contents($file, "<?php\n\n\$vendorDir = dirname(__DIR__);\n\nreturn $array;\n");
+        $array = str_replace(["'<vendor-dir>", "'<root-dir>"], ['$vendorDir . \'', '$rootDir . \''], var_export($plugins, true));
+        file_put_contents($file, "<?php\n\n\$vendorDir = dirname(__DIR__);\n" .
+            "\$rootDir = " . (new Filesystem())->findShortestPathCode($this->vendorDir . '/craftcms', getcwd(), true) . ";\n\n" .
+            "return $array;\n");
 
         // Invalidate opcache of plugins.php if it exists
         if (function_exists('opcache_invalidate')) {
