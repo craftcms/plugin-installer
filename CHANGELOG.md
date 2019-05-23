@@ -1,6 +1,11 @@
 Changelog
 =========
 
+## 1.5.4 - 2019-05-23
+
+### Fixed
+- Fixed PHP 5 compatibility.
+
 ## 1.5.3 - 2019-05-22
 
 ### Added

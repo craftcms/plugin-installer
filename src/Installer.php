@@ -94,7 +94,7 @@ class Installer extends LibraryInstaller
      * @param bool $isRoot
      * @throws InvalidPluginException() if there's an issue with the plugin
      */
-    public function addPlugin(PackageInterface $package, bool $isRoot = false)
+    public function addPlugin(PackageInterface $package, $isRoot = false)
     {
         $extra = $package->getExtra();
         $prettyName = $package->getPrettyName();
@@ -129,11 +129,11 @@ class Installer extends LibraryInstaller
             $this->io->write('<warning>' . $prettyName . ' uses the old plugin handle format ("' . $extra['handle'] . '"). It should be "' . $handle . '".</warning>');
         }
 
-        $plugin = [
+        $plugin = array(
             'class' => $class,
             'basePath' => $basePath,
             'handle' => $handle,
-        ];
+        );
 
         if ($aliases) {
             $plugin['aliases'] = $aliases;
@@ -271,7 +271,7 @@ class Installer extends LibraryInstaller
      * @param bool $isRoot
      * @return array|null
      */
-    protected function generateDefaultAliases(PackageInterface $package, &$class, &$basePath, bool $isRoot)
+    protected function generateDefaultAliases(PackageInterface $package, &$class, &$basePath, $isRoot)
     {
         $autoload = $package->getAutoload();
 
@@ -281,7 +281,7 @@ class Installer extends LibraryInstaller
 
         $fs = new Filesystem();
         $vendorDir = $fs->normalizePath($this->vendorDir);
-        $aliases = [];
+        $aliases = array();
 
         foreach ($autoload['psr-4'] as $namespace => $path) {
             if (is_array($path)) {
@@ -399,7 +399,7 @@ class Installer extends LibraryInstaller
         $file = $this->vendorDir . '/' . static::PLUGINS_FILE;
 
         if (!is_file($file)) {
-            return [];
+            return array();
         }
 
         // Invalidate opcache of plugins.php if it exists
@@ -447,9 +447,10 @@ class Installer extends LibraryInstaller
             mkdir(dirname($file), 0777, true);
         }
 
-        $array = str_replace(["'<vendor-dir>", "'<root-dir>"], ['$vendorDir . \'', '$rootDir . \''], var_export($plugins, true));
+        $array = str_replace(array("'<vendor-dir>", "'<root-dir>"), array('$vendorDir . \'', '$rootDir . \''), var_export($plugins, true));
+        $fs = new Filesystem();
         file_put_contents($file, "<?php\n\n\$vendorDir = dirname(__DIR__);\n" .
-            "\$rootDir = " . (new Filesystem())->findShortestPathCode($this->vendorDir . '/craftcms', getcwd(), true) . ";\n\n" .
+            "\$rootDir = " . $fs->findShortestPathCode($this->vendorDir . '/craftcms', getcwd(), true) . ";\n\n" .
             "return $array;\n");
 
         // Invalidate opcache of plugins.php if it exists
