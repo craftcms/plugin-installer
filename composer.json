@@ -29,6 +29,9 @@
       "craft\\composer\\": "src/"
     }
   },
+  "require-dev": {
+    "composer/composer": "^1.0 || ^2.0"
+  },
   "extra": {
     "class": "craft\\composer\\Plugin"
   }
