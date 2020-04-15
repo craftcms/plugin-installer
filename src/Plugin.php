@@ -18,17 +18,37 @@ use Composer\Plugin\PluginInterface;
 class Plugin implements PluginInterface
 {
     /**
+     * @var Installer
+     */
+    private $installer;
+
+    /**
      * @inheritdoc
      */
     public function activate(Composer $composer, IOInterface $io)
     {
         // Register the plugin installer
-        $installer = new Installer($io, $composer, 'craft-plugin');
-        $composer->getInstallationManager()->addInstaller($installer);
+        $this->installer = new Installer($io, $composer, 'craft-plugin');
+        $composer->getInstallationManager()->addInstaller($this->installer);
 
         // Is this a plugin at root? Elementary, my dear Watson 🕵️!
-        if ($installer->supports($composer->getPackage()->getType())) {
-            $installer->addPlugin($composer->getPackage(), true);
+        if ($this->installer->supports($composer->getPackage()->getType())) {
+            $this->installer->addPlugin($composer->getPackage(), true);
         }
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function deactivate(Composer $composer, IOInterface $io)
+    {
+        $composer->getInstallationManager()->removeInstaller($this->installer);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function uninstall(Composer $composer, IOInterface $io)
+    {
     }
 }
