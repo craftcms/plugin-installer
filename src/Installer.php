@@ -19,13 +19,7 @@ use Composer\Util\Filesystem;
  */
 class Installer extends LibraryInstaller
 {
-    // Constants
-    // =========================================================================
-
     const PLUGINS_FILE = 'craftcms/plugins.php';
-
-    // Public Methods
-    // =========================================================================
 
     /**
      * @inheritdoc

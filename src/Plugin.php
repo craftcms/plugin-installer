@@ -17,9 +17,6 @@ use Composer\Plugin\PluginInterface;
  */
 class Plugin implements PluginInterface
 {
-    // Public Methods
-    // =========================================================================
-
     /**
      * @inheritdoc
      */
