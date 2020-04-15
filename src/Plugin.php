@@ -23,7 +23,7 @@ class Plugin implements PluginInterface
     public function activate(Composer $composer, IOInterface $io)
     {
         // Register the plugin installer
-        $installer = new Installer($io, $composer);
+        $installer = new Installer($io, $composer, 'craft-plugin');
         $composer->getInstallationManager()->addInstaller($installer);
 
         // Is this a plugin at root? Elementary, my dear Watson 🕵️!

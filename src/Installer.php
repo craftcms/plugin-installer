@@ -24,14 +24,6 @@ class Installer extends LibraryInstaller
     /**
      * @inheritdoc
      */
-    public function supports($packageType)
-    {
-        return $packageType === 'craft-plugin';
-    }
-
-    /**
-     * @inheritdoc
-     */
     public function install(InstalledRepositoryInterface $repo, PackageInterface $package)
     {
         // Install the plugin in vendor/ like a normal Composer library
