@@ -1,6 +1,11 @@
 Changelog
 =========
 
+## 1.5.5 - 2020-04-17
+
+### Added
+- Added Composer 2 compatibility. ([#3](https://github.com/craftcms/plugin-installer/issues/3))
+
 ## 1.5.4 - 2019-05-23
 
 ### Fixed
