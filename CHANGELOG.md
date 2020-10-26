@@ -5,6 +5,9 @@
 ### Changed
 - The plugin now requires PHP 5.4 or later.
 
+### Fixed
+- Fixed an error that occurred when installing, updating, or removing Craft plugins with Composer 2. ([#5](https://github.com/craftcms/plugin-installer/issues/5)) 
+
 ## 1.5.5 - 2020-04-17
 
 ### Added
