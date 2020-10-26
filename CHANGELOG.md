@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 1.5.6 - 2020-10-26
 
 ### Changed
 - The plugin now requires PHP 5.4 or later.
