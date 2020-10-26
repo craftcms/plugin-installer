@@ -22,6 +22,7 @@
   "license": "MIT",
   "minimum-stability": "stable",
   "require": {
+    "php": ">=5.4",
     "composer-plugin-api": "^1.0 || ^2.0"
   },
   "autoload": {
