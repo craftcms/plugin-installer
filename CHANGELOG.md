@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 1.5.7 - 2021-02-17
 
 ### Fixed
 - Fixed a bug where `vendor/craftcms/plugins.php` could contain absolute plugin base/alias paths if `composer update` was run from a plugin repo.
