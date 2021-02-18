@@ -1,7 +1,6 @@
 {
   "name": "craftcms/plugin-installer",
   "description": "Craft CMS Plugin Installer",
-  "version": "1.5.6",
   "keywords": [
     "cms",
     "composer",
