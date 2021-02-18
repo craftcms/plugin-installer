@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+### Fixed
+- Fixed a bug where `vendor/craftcms/plugins.php` could contain absolute plugin base/alias paths if `composer update` was run from a plugin repo.
+
 ## 1.5.6 - 2020-10-26
 
 ### Changed
