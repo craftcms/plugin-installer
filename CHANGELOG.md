@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.6.0 - 2023-02-22
+
+- Added support for private plugins. ([craftcms/cms#12716](https://github.com/craftcms/cms/pull/12716), [craftcms/cms#8908](https://github.com/craftcms/cms/discussions/8908))
+
 ## 1.5.7 - 2021-02-17
 
 ### Fixed
