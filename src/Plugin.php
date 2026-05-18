@@ -8,23 +8,20 @@ namespace craft\composer;
 
 use Composer\Composer;
 use Composer\IO\IOInterface;
+use Composer\Plugin\Capability\CommandProvider;
+use Composer\Plugin\Capable;
 use Composer\Plugin\PluginInterface;
+use craft\composer\commands\Provider;
 
 /**
  * Plugin is the Composer plugin that registers the Craft CMS composer installer.
  *
  * @author Pixel & Tonic, Inc. <support@craftcms.com>
  */
-class Plugin implements PluginInterface
+class Plugin implements PluginInterface, Capable
 {
-    /**
-     * @var Installer
-     */
-    private $installer;
+    private Installer $installer;
 
-    /**
-     * @inheritdoc
-     */
     public function activate(Composer $composer, IOInterface $io)
     {
         // Register the plugin installer
@@ -37,18 +34,23 @@ class Plugin implements PluginInterface
         }
     }
 
-    /**
-     * @inheritdoc
-     */
     public function deactivate(Composer $composer, IOInterface $io)
     {
         $composer->getInstallationManager()->removeInstaller($this->installer);
     }
 
-    /**
-     * @inheritdoc
-     */
     public function uninstall(Composer $composer, IOInterface $io)
+    {}
+
+    public function getCapabilities()
     {
+        return [
+            CommandProvider::class => Provider::class,
+        ];
+    }
+
+    public function getInstaller(): Installer
+    {
+        return $this->installer;
     }
 }
