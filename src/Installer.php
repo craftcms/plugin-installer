@@ -297,7 +297,7 @@ class Installer extends LibraryInstaller
         }
 
         $fs = new Filesystem();
-        $vendorDir = $fs->normalizePath($this->vendorDir);
+        $vendorDir = $this->getAbsoluteVendorDir();
         $aliases = [];
 
         foreach ($autoload['psr-4'] as $namespace => $path) {
@@ -312,7 +312,7 @@ class Installer extends LibraryInstaller
                 if ($isRoot) {
                     $path = $cwd . '/' . $path;
                 } else {
-                    $path = $this->vendorDir . '/' . $package->getPrettyName() . '/' . $path;
+                    $path = $vendorDir . '/' . $package->getPrettyName() . '/' . $path;
                 }
             }
 
@@ -418,8 +418,8 @@ class Installer extends LibraryInstaller
         $plugins = require($file);
 
         // Swap absolute paths with <vendor-dir> tags
-        $vendorDir = str_replace('\\', '/', $this->vendorDir);
-        $cwd = getcwd();
+        $vendorDir = $this->getAbsoluteVendorDir();
+        $cwd = str_replace('\\', '/', getcwd());
 
         foreach ($plugins as &$plugin) {
             // basePath
@@ -451,13 +451,26 @@ class Installer extends LibraryInstaller
         $array = str_replace(["'<vendor-dir>", "'<root-dir>"], ['$vendorDir . \'', '$rootDir . \''], var_export($plugins, true));
         $fs = new Filesystem();
         file_put_contents($file, "<?php\n\n\$vendorDir = dirname(__DIR__);\n" .
-            "\$rootDir = " . $fs->findShortestPathCode($this->vendorDir . '/craftcms', getcwd(), true) . ";\n\n" .
+            "\$rootDir = " . $fs->findShortestPathCode($this->getAbsoluteVendorDir() . '/craftcms', getcwd(), true) . ";\n\n" .
             "return $array;\n");
 
         // Invalidate opcache of plugins.php if it exists
         if (function_exists('opcache_invalidate')) {
             @opcache_invalidate($file, true);
         }
+    }
+
+    /**
+     * @return string The absolute, normalized path to the vendor/ folder
+     */
+    private function getAbsoluteVendorDir()
+    {
+        $fs = new Filesystem();
+        $path = $this->vendorDir;
+        if (!$fs->isAbsolutePath($path)) {
+            $path = getcwd() . '/' . $path;
+        }
+        return $fs->normalizePath($path);
     }
 
     /**
