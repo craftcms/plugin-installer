@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+### Fixed
+- Fixed an error when running `composer validate` from a plugin's root directory with a relative vendor path.
+
 ## 1.6.0 - 2023-02-22
 
 - Added support for private plugins. ([craftcms/cms#12716](https://github.com/craftcms/cms/pull/12716), [craftcms/cms#8908](https://github.com/craftcms/cms/discussions/8908))
